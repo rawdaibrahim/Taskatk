@@ -16,4 +16,6 @@
     function disconnect($conn){
         mysqli_close($conn);
     }
+
+    $conn = connect();
 ?>

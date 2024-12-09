@@ -1,6 +1,5 @@
 <?php
     include('db_conn.php');
-    $conn = connect();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,12 +22,16 @@
     </h1>
 
     <?php
-        echo "Subscription: " . check_subscription($conn, $_COOKIE["session_id"]);
-        echo "<br>";
         echo "Max Lists: " . check_max_lists($conn, $_COOKIE["session_id"]);
         echo "<br>";
         echo "You currently have " . check_lists_left($conn, $_COOKIE["session_id"]) . " lists left to create.";
     ?>
+
+    <form action="list_management.php" method="post">
+        <input type="hidden" name="action" value="create_list">
+        <input type="text" name="list_name" placeholder="List Name" required>
+        <input type="submit" value="Create List">
+    </form>
 
 </body>
 </html>

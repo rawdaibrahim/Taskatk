@@ -1,6 +1,15 @@
 <?php
-    include('db_conn.php');
+    if (!isset($_COOKIE["session_id"])) {
+        header('Location: login.php');
+        die();
+    }
 ?>
+
+<?php
+    include('utils/db_conn.php');
+    include('utils/user_management.php');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,16 +18,8 @@
     <title>ToDo Lists- Taskatk</title>
 </head>
 <body>
-    <h1>Hello,
-    <?php
-        include('user_management.php');
-
-        // $m_success = signup($conn, 'mohamed@gmail.com', 'M0h@m3d', 2);
-        // echo $m_success;
-
-        $m_success = login($conn, 'mohamed@gmail.com', 'M0h@m3d');
-        echo $m_success;
-    ?>
+    <h1>
+        Hello, User <?php echo _get_user_from_session($conn, $_COOKIE["session_id"]); ?>
     </h1>
 
     <?php
@@ -26,13 +27,6 @@
         echo "<br>";
         echo "You currently have " . check_lists_left($conn, $_COOKIE["session_id"]) . " lists left to create.";
     ?>
-
-    <form action="list_management.php" method="post">
-        <input type="hidden" name="action" value="create_list">
-        <input type="text" name="list_name" placeholder="List Name" required>
-        <input type="submit" value="Create List">
-    </form>
-
 </body>
 </html>
 <?php

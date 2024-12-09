@@ -52,8 +52,8 @@ label {
   margin-bottom: 0.5rem;
 }
 
-input {
-  width: 100%;
+input , select{
+  width: 70%;
   padding: 0.6rem;
   border: 1px solid #ccc;
   border-radius: 5px;

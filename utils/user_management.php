@@ -1,7 +1,7 @@
 <?php
-    function signup($conn, $email, $password, $subscription_id) {
+    function signup($conn, $username, $password, $subscription_id) {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $sql = "INSERT INTO user (email, password, subscription_id) VALUES ('$email', '$hashed_password', '$subscription_id')";
+        $sql = "INSERT INTO user (username, password, subscription_id) VALUES ('$username', '$hashed_password', '$subscription_id')";
 
         try {
             $result = mysqli_query($conn, $sql);
@@ -16,8 +16,8 @@
         }
     }
 
-    function login($conn, $email, $password) {
-        $sql = "SELECT * FROM user WHERE email = '$email'";
+    function login($conn, $username, $password) {
+        $sql = "SELECT * FROM user WHERE username = '$username'";
         $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) == 1) {
             $row = mysqli_fetch_assoc($result);

@@ -21,10 +21,10 @@
                 <input type="password" id="password" name="password" required>
             </div>
             <div class="input-box">
-                <label for="signup-user-type">User Type</label>
-                <select id="signup-user-type" name="user_type">
-                    <option value=1>Normal User</option>
-                    <option value=2>Premium User</option>
+                <label for="signup-user-type">Subscription</label>
+                <select id="signup-user-type" name="subscription">
+                    <option value=1>Basic</option>
+                    <option value=2>Premium</option>
                 </select>
             </div>
             <p style="font-size: 15px; padding-left: 10px; color: #5f5f5f;">
@@ -43,18 +43,18 @@
                 if($_SERVER["REQUEST_METHOD"] == "POST"){
                     $username = filter_input (INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS);
                     $password = filter_input (INPUT_POST, "password", FILTER_SANITIZE_SPECIAL_CHARS);
-                    $user_type = filter_input (INPUT_POST, "user_type", FILTER_SANITIZE_SPECIAL_CHARS);
+                    $subscription = filter_input (INPUT_POST, "subscription", FILTER_SANITIZE_SPECIAL_CHARS);
                     if (empty($username)) {
                         echo "Please enter a username";
                     }
                     elseif (empty($password)) {
                         echo "Please enter a password";
                     }
-                    elseif (empty($user_type)) {
+                    elseif (empty($subscription)) {
                         echo "Please choose a subscription";
                     }
                     else{
-                        $success = signup($conn, $username, $password, $user_type);
+                        $success = signup($conn, $username, $password, $subscription);
                         if ($success) {
                             echo <<<EOD
                                 <pre style='font-size: 16px; padding-left: 10px; color: #228B22;'>

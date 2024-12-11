@@ -1,12 +1,12 @@
 CREATE TABLE `subscription` (
     `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `name` varchar(20) NOT NULL,
+    `name` varchar(20) NOT NULL UNIQUE,
     `max_lists` int(11) NOT NULL
 );
 
 CREATE TABLE `user` (
     `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `username` varchar(30) NOT NULL,
+    `username` varchar(30) NOT NULL UNIQUE,
     `password` char(60) NOT NULL,
     `subscription_id` int(11) NOT NULL,
   	FOREIGN KEY (subscription_id) REFERENCES subscription(id)

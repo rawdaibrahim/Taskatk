@@ -9,7 +9,7 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playwrite+HR+Lijeva:wght@100..400&family=Playwrite+HU:wght@100..400&display=swap" rel="stylesheet">
 	</head>
-	<body>
+	<body class="body">
 		<div class="container">
 			<form id="login-form" action="<?php htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post">
 				<h1>Login</h1>
@@ -26,7 +26,7 @@
 					<a href="signup.php" style="color: rgb(49, 49, 219); text-decoration: none;">Sign Up</a>
 				</p>        
 				<div class="button-container">
-					<button type="submit">Login</button>
+					<button type="submit" class="submit">Login</button>
 				</div>
 				<?php
 					include('utils/db_conn.php');

@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playwrite+HR+Lijeva:wght@100..400&family=Playwrite+HU:wght@100..400&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="body">
     <div class="container">
         <form id="signup-form" action="<?php htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post">
             <h1>Sign Up</h1>
@@ -33,7 +33,7 @@
             </p>
 
             <div class="button-container">
-                <button type="submit">Sign Up</button>
+                <button type="submit" class="submit">Sign Up</button>
             </div>
 
             <?php

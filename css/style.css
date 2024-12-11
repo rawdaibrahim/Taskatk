@@ -2,17 +2,22 @@
   font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
-body {
-  margin: 0;
-  padding: 0;
+.body {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  background-image: linear-gradient(to right, #000a16 , #003a79);
   background-color: #01152b;
   text-align: center;
+  word-wrap: break-word;
 }
 
+body{
+  margin: 0;
+  padding: 0;
+
+}
 
 .container {
   background: #fff;
@@ -23,16 +28,33 @@ body {
   max-width: 400px;
   width: 100%;
   display: flex;
+  flex-direction: column; /* Stack elements vertically */
   justify-content: center;
   align-items: center;
+  margin: 30px;
 }
 
-.container h1 {
-  font-family:'Pacifico', cursive; 
-  font-weight: 20;
+
+.container h1{
   font-size: 60px;
   text-align: center;
   color: #000408;
+  font-weight: 20;
+  text-align: center;
+  display: block;
+}
+
+h1 {
+  font-size: 22px;
+  font-family:'Pacifico', cursive; 
+  color: #181821;
+  padding-left: 20px;
+  display: flex; /* must be removed for the login and signup*/
+  align-items: center;
+  text-align: center;
+}
+h1 img{
+  margin-right: 7px;
 }
 
 .input-box {
@@ -42,7 +64,6 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-
 }
 
 label {
@@ -52,7 +73,7 @@ label {
   margin-bottom: 0.5rem;
 }
 
-input , select{
+input , select, textarea{
   width: 70%;
   padding: 0.6rem;
   border: 1px solid #ccc;
@@ -69,7 +90,7 @@ input:focus {
 }
 
 
-button {
+.submit {
   width: 40%;
   padding: 0.8rem;
   background-color: #002c5b;
@@ -82,11 +103,11 @@ button {
 
 }
 
-button:hover {
+.submit:hover {
   background-color: #000000;
 }
 
-button:active {
+.submit:active {
   background-color: #004080;
 }
 
@@ -95,5 +116,257 @@ button:active {
   justify-content: center;
   align-items: center;
 }
+
+
+.nav{
+  width:100%;
+  position: fixed; /* Fix the navigation bar in place */
+  display: flex;
+  backdrop-filter:blur(20px);
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  background-image:linear-gradient(to right,rgb(129, 123, 181), rgb(53, 50, 149));
+  top: 0; /* Position it at the top of the viewport */
+  left: 0;
+  box-shadow: 0 4px 10px rgba(22, 22, 67, 0.253);
+
+}
+
+.nav .link{
+  text-decoration: none;
+  color:#f1f1fa;
+  margin: 10px;
+  padding-right: 1em;
+  position: relative;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.nav .link::after{
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 90%;
+  height: 3px;
+  background-color: #f1f1fa;
+  border-radius: 3px;
+  transition: .5s ease-in-out;
+  transform:scalex(0);
+  
+}
+
+.nav .link:hover:after{
+  transform: scaleX(1);
+}
+
+a.active .link{
+  color: #033ccd;
+}
+
+a.active .link::after{
+  transform: scaleX(1);
+  background-color:#f1f1fa;
+  height: 4px;
+}
+
+#lists-container {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: left;
+  gap: 60px; /* Gap between the items */
+  padding: 50px;
+  width: fit-content;
+}
+
+#lists-section{
+  margin-top: 80px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.add-button {
+  background-color: #ffffff; /* Green background */
+  border: none; /* Remove default border */
+  color: #18181f; /* White text */
+  padding: 10px 20px; /* Padding */
+  text-align: center; /* Center text */
+  text-decoration: none; /* Remove underline */
+  display: inline-flex; /* Use flexbox for alignment */
+  align-items:center; /* Center items vertically */
+  justify-content: center;
+  font-size: 16px; /* Font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth transition */
+  font-size: 25px;
+  font-weight: 550;
+  gap:10px;
+}
+
+.cont .add-button{
+  font-weight: 500;
+  font-size: 18px;
+
+}
+
+.task span {
+  margin-right: 10px;
+  font-size: 16px;
+  color: #333;
+  word-wrap: break-word;
+}
+
+
+
+.task button {
+  background:transparent;
+  border: none;
+  color: rgb(46, 46, 82);
+  padding: 5px;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.task button:hover + img {
+  box-shadow: 0 4px 10px rgb(0, 0, 0);
+}
+
+.task hr {
+  border: none;
+  border-top: 1px solid rgb(46, 46, 82);
+  margin: 10px 0 0 0;
+  width: 100%;
+}
+
+.cont{
+  background: #fff;
+  padding: 1rem 0.2rem 1rem 0.2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(22, 22, 67, 0.523);
+  width:max-content;
+  width: 300px;
+  display: flex;
+  flex-direction: column; /* Stack tasks vertically */
+  gap: 0.1rem; /* Add space between tasks */
+  justify-content: flex-start; /* Align tasks to the top */
+  align-items: stretch; /* Ensure tasks take full container width */
+  height: fit-content;
+}
+.cont .add-button{
+  font-size:15px;
+}
+
+.task {
+  border-radius: 3px;
+  padding: 0.5rem;
+  max-width: 250px;
+  width: 100%; /* Make the task element fit the container */
+  box-sizing: border-box; /* Include padding in the width calculation */
+  display: grid;
+  grid-template-columns: auto 90% auto; /* Name takes most space, then checkbox, then button */
+  align-items: center; 
+  transition: box-shadow 0.3s ease;
+}
+.task input[type="checkbox"] {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border: 2px solid #5164a7;
+  border-radius: 100px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.task input[type="checkbox"]:checked {
+  background-color: #92a4e8;
+  border-color: #2a4196;
+  position: relative;
+}
+
+.task input[type="checkbox"]:checked::before {
+  content: "✓";
+  color: white;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 20px;
+}
+
+h3{
+  text-align: center;
+  font-size: 25px;
+  margin: 0.5rem 0 0.5rem 0;
+  font-weight: 500;
+  word-wrap: break-word;
+  padding:0 1rem 0 1rem;
+}
+
+button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-div{
+  margin: 100px 0 0 0;
+  width:100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+#contact-form{
+  width:min-content;
+}
+.form-div *{
+  margin:10px;
+}
+
+.form-div div{
+  width: 100%;
+  margin:0;
+
+}
+
+.center .submit{
+  width:max-content;
+  padding:10px 20px;
+  font-size: 20px;
+  background-color: rgb(53, 50, 149);
+}
+
+textarea{
+  height: 200px;
+  min-width: 500px;
+  width:90%;
+  text-wrap:wrap;
+}
+
+.form-div p{
+  font-size: 25px;
+}
+
+
+
+
+
+
+
+
 
 

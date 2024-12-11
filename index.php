@@ -13,20 +13,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDo Lists- Taskatk</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
+  <div class="nav">
     <h1>
-        Hello, User <?php echo _get_user_from_session($conn, $_COOKIE["session_id"]); ?>
+      <img src="css/to-do-list.png" alt="Icon" width="29" height="29">
+      Taskatk
     </h1>
+    <div>
+      <a href="index.php" class="link">Home</a>
+      <a href="monthly-tasks.php" class="link">Monthly Tasks</a>
+      <a href="About.php" class="link">About Us</a>
+      <a href="contact.php" class="link">Contact Us</a>
+    </div>
+  </div>
 
-    <?php
-        echo "Max Lists: " . check_max_lists($conn, $_COOKIE["session_id"]);
-        echo "<br>";
-        echo "You currently have " . check_lists_left($conn, $_COOKIE["session_id"]) . " lists left to create.";
-    ?>
+  <section id="lists-section">
+    <div class="center">
+      <button onclick="addList()" class="add-button">Add List <img src="css/plus.png" alt="Icon" width="20" height="20"></button>
+    </div>
+    <div id="lists-container">
+    </div>
+  </section>
 </body>
 </html>
 <?php

@@ -40,8 +40,5 @@
     <div id="lists-container">
     </div>
   </section>
-</body>
-</html>
-<?php
-    disconnect($conn);
-?>
+  <script>
+  

@@ -5,7 +5,7 @@
 
     // Get request method and endpoint
     $method = $_SERVER['REQUEST_METHOD'];
-    
+
     if (isset($_SERVER['PATH_INFO'])) {
         $endpoint = $_SERVER['PATH_INFO'];
     } else exit;
@@ -25,7 +25,7 @@
             case 'GET':
                 if ($endpoint == '/' && !isset($_GET['id'])) {
                     // Retrieve all lists for user
-                    $lists = query_result_to_json(get_user_lists($conn));
+                    $lists = json_encode(get_user_lists($conn));
                     http_response_code(200); // OK
                     header('Content-Type: application/json');
                     echo $lists;
@@ -40,7 +40,7 @@
                     } else {
                         http_response_code(200); // OK
                         header('Content-Type: application/json');
-                        echo query_result_to_json($list);
+                        echo json_encode($list);
                     }
                 }
                 break;

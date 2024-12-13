@@ -42,26 +42,4 @@
             return $result;
         }
     }
-
-    function get_user_lists($conn) {
-        $session_id = $_COOKIE["session_id"];
-        $user_id = _get_user_from_session($conn, $session_id);
-        $sql = "SELECT id, name FROM list WHERE user_id = '$user_id'";
-        $result = mysqli_query($conn, $sql);
-        return $result;
-    }
-
-    function get_list($conn, $list_id) {
-        $session_id = $_COOKIE["session_id"];
-        $user_id = _get_user_from_session($conn, $session_id);
-        $list_user_id = _get_list_user_id($conn, $list_id);
-
-        if ($user_id != $list_user_id) {
-            return false;
-        } else {
-            $sql = "SELECT id, name FROM list WHERE id = '$list_id'";
-            $result = mysqli_query($conn, $sql);
-            return $result;
-        }
-    }
 ?>

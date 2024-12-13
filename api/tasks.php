@@ -13,7 +13,9 @@
     // Define API endpoints
     $endpoints = array(
         '/' => array('GET', 'DELETE'),
+        '/monthly_tasks' => array('GET'),
         '/create' => array('POST'),
+        '/edit' => array('POST'),
     );
 
     // Connect to database
@@ -24,55 +26,108 @@
         switch ($method) {
             case 'GET':
                 if ($endpoint == '/' && !isset($_GET['id'])) {
-                    // Retrieve all lists for user
-                    $lists = query_result_to_json(get_user_lists($conn));
+                    // Retrieve all tasks for user
+                    $tasks = query_result_to_json(get_user_tasks($conn));
                     http_response_code(200); // OK
                     header('Content-Type: application/json');
-                    echo $lists;
+                    echo $tasks;
                 } elseif ($endpoint == '/' && isset($_GET['id'])) {
-                    // Retrieve list by ID
-                    $list_id = $_GET['id'];
-                    $list = get_list($conn, $list_id);
-                    if (!$list) {
+                    // Retrieve task by ID
+                    $task_id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
+                    $task = get_task($conn, $task_id);
+
+                    if (!$task) {
                         http_response_code(404); // Not Found
                         header('Content-Type: application/json');
-                        echo json_encode(array('message' => "You do not have permission to view this list."));
+                        echo json_encode(array('message' => "You do not have permission to view this task."));
                     } else {
                         http_response_code(200); // OK
                         header('Content-Type: application/json');
-                        echo query_result_to_json($list);
+                        echo query_result_to_json($task);
                     }
+                } elseif ($endpoint == '/monthly_tasks') {
+                    if (!isset($_GET['month']) && !isset($_GET['year'])) {
+                        http_response_code(400); // Bad Request
+                        echo 'Bad Request';
+                        disconnect($conn);
+                        exit;
+                    }
+
+                    $month = filter_var($_GET['month'], FILTER_SANITIZE_NUMBER_INT);
+                    $year = filter_var($_GET['year'], FILTER_SANITIZE_NUMBER_INT);
+                    
+                    // Retrieve monthly tasks for user
+                    $tasks = query_result_to_json(get_user_monthly_tasks($conn, $year, $month));
+                    http_response_code(200); // OK
+                    header('Content-Type: application/json');
+                    echo $tasks;
                 }
                 break;
             case 'POST':
                 if ($endpoint == '/create') {
-                    // Create new list
-                    $list_name = filter_input(INPUT_POST, "list_name", FILTER_SANITIZE_SPECIAL_CHARS);
-                    $list_id = create_list($conn, $list_name);
-                    // Save list data to database
+                    // Filter task data
+                    $list_id = filter_input(INPUT_POST, "list_id", FILTER_SANITIZE_SPECIAL_CHARS);
+                    $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_SPECIAL_CHARS);
+                    $description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_SPECIAL_CHARS);
+                    $due_date = filter_input(INPUT_POST, "due_date", FILTER_SANITIZE_SPECIAL_CHARS);
+
+                    // Create task in database
+                    $task_id = create_task($conn, $list_id, $name, $description, $due_date);
+
                     http_response_code(201); // Created
                     header('Content-Type: application/json');
-                    if ($list_id) {
-                        echo json_encode(array('message' => 'List created successfully', 'list_id' => $list_id['id']));
+                    if ($task_id) {
+                        echo json_encode(array(
+                            'message' => 'Task created successfully', 'task_id' => $task_id['id']
+                        ));
                     } else {
-                        echo json_encode(array('message' => 'List creation failed'));
+                        echo json_encode(array('message' => "Task creation failed."));
+                    }
+                } elseif ($endpoint == '/edit') {
+                    // Filter task data
+                    $task_id = filter_input(INPUT_POST, "task_id", FILTER_SANITIZE_NUMBER_INT);
+                    $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_SPECIAL_CHARS);
+                    $description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_SPECIAL_CHARS);
+                    $due_date = filter_input(INPUT_POST, "due_date", FILTER_SANITIZE_SPECIAL_CHARS);
+                    $flg_completed = filter_input(INPUT_POST, "flg_completed", FILTER_SANITIZE_NUMBER_INT);
+
+                    // Edit task in database
+                    $result = edit_task($conn, $task_id, $name, $description, $due_date, $flg_completed);
+
+                    if ($result) {
+                        http_response_code(200); // OK
+                        header('Content-Type: application/json');
+                        echo json_encode(array('message' => 'Task updated successfully'));
+                    } else {
+                        http_response_code(404); // Not Found
+                        header('Content-Type: application/json');
+                        echo json_encode(
+                            array('message' => "Failed to edit this task.")
+                        );
                     }
                 }
                 break;
             case 'DELETE':
                 if ($endpoint == '/') {
-                    // Delete list
-                    $list_id = $_GET['id'];
-                    $result = delete_list($conn, $list_id);
+                    if (!isset($_GET['id'])) {
+                        http_response_code(400); // Bad Request
+                        echo 'Bad Request';
+                        disconnect($conn);
+                        exit;
+                    }
+                    // Delete task
+                    $task_id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
+                    $result = delete_task($conn, $task_id);
+
                     if ($result) {
                         http_response_code(200); // OK
                         header('Content-Type: application/json');
-                        echo json_encode(array('message' => 'List deleted successfully'));
+                        echo json_encode(array('message' => 'Task deleted successfully'));
                     } else {
                         http_response_code(404); // Not Found
                         header('Content-Type: application/json');
                         echo json_encode(
-                            array('message' => "You do not have permission to delete this list.")
+                            array('message' => "Failed to delete this task.")
                         );
                     }
                 }

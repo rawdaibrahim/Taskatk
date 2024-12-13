@@ -14,7 +14,7 @@
             
             if ($result) {
                 $sql = "SELECT LAST_INSERT_ID() as id";
-                $result = mysqli_query($conn, $sql);
+                $result = mysqli_fetch_assoc(mysqli_query($conn, $sql));
             }
             return $result;
         }

@@ -32,6 +32,7 @@
                 } elseif ($endpoint == '/' && isset($_GET['id'])) {
                     // Retrieve list by ID
                     $list_id = $_GET['id'];
+                    $list_id = filter_var($list_id, FILTER_SANITIZE_NUMBER_INT);
                     $list = get_list($conn, $list_id);
                     if (!$list) {
                         http_response_code(404); // Not Found
@@ -63,6 +64,7 @@
                 if ($endpoint == '/') {
                     // Delete list
                     $list_id = $_GET['id'];
+                    $list_id = filter_var($list_id, FILTER_SANITIZE_NUMBER_INT);
                     $result = delete_list($conn, $list_id);
                     if ($result) {
                         http_response_code(200); // OK

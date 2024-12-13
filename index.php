@@ -1,13 +1,8 @@
 <?php
-    if (!isset($_COOKIE["session_id"])) {
-        header('Location: login.php');
-        die();
-    }
-?>
-
-<?php
-    include('utils/db_conn.php');
-    include('utils/user_management.php');
+  if (!isset($_COOKIE["session_id"])) {
+    header('Location: login.php');
+    die();
+  }
 ?>
 
 <!DOCTYPE html>
@@ -42,6 +37,3 @@
   </section>
 </body>
 </html>
-<?php
-    disconnect($conn);
-?>

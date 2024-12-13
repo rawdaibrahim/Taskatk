@@ -22,7 +22,8 @@
   </div>
   <div class="form-div">
     <form id="contact-form">
-      <p>where learning knows no bounds! <br> Access high-quality courses offered by educators spanning every corner of Egypt</p>
+      <pre style="text-align: center; font-size: 18px;">We are here to help. Ready to get in touch?
+        Please fill out the form below and we will get back to you as soon as possible</pre>
       <div style="display: flex;">
         <input type="text" id="name" placeholder="Your Name" required>
         <input type="email" id="email" placeholder="Your Email" required>

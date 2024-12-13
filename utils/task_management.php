@@ -1,6 +1,4 @@
 <?php
-
-    include('user_management.php');
     include('list_management.php');
 
     function create_task(

@@ -34,28 +34,40 @@
         }
     }
 
-    function _get_user_from_session($conn, $session_id) {
+    function _get_user_from_session() {
+        $session_id = $_COOKIE["session_id"];
         return $session_id - 35623559663;
     }
 
-    function check_subscription($conn, $session_id) {
-        $user_id = _get_user_from_session($conn, $session_id);
+    function get_user_data($conn) {
+        $user_id = _get_user_from_session();
+        $sql = "SELECT username FROM user WHERE id = '$user_id'";
+        $result = mysqli_fetch_assoc(mysqli_query($conn, $sql));
+        $result = array(
+            'username' => $result['username'],
+            'subscription' => check_subscription($conn)
+        );
+        return json_encode($result);
+    }
+
+    function check_subscription($conn) {
+        $user_id = _get_user_from_session();
         $sql = "SELECT name FROM subscription WHERE id = (SELECT subscription_id FROM user WHERE id = '$user_id')";
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_assoc($result);
         return $row['name'];
     }
 
-    function check_max_lists($conn, $session_id) {
-        $user_id = _get_user_from_session($conn, $session_id);
+    function check_max_lists($conn) {
+        $user_id = _get_user_from_session();
         $sql = "SELECT max_lists FROM subscription WHERE id = (SELECT subscription_id FROM user WHERE id = '$user_id')";
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_assoc($result);
         return $row['max_lists'];
     }
 
-    function check_lists_left($conn, $session_id) {
-        $user_id = _get_user_from_session($conn, $session_id);
+    function check_lists_left($conn) {
+        $user_id = _get_user_from_session();
         $max_lists = mysqli_fetch_assoc(mysqli_query(
             $conn,
             "SELECT max_lists FROM subscription WHERE id = (SELECT subscription_id FROM user WHERE id = '$user_id')"

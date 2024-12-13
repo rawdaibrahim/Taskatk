@@ -4,8 +4,7 @@
     function create_task(
         $conn, $list_id, $name, $description="", $due_date=null, $flg_completed=false
     ) {
-        $session_id = $_COOKIE["session_id"];
-        $user_id = _get_user_from_session($conn, $session_id);
+        $user_id = _get_user_from_session();
         $list_user_id = _get_list_user_id($conn, $list_id);
 
         if ($user_id != $list_user_id) {
@@ -28,8 +27,7 @@
     function edit_task(
         $conn, $task_id, $name=null, $description=null, $due_date=null, $flg_completed=false
     ) {
-        $session_id = $_COOKIE["session_id"];
-        $user_id = _get_user_from_session($conn, $session_id);
+        $user_id = _get_user_from_session();
         $list_user_id = mysqli_fetch_assoc(mysqli_query(
             $conn, "SELECT user_id FROM list WHERE id = (SELECT list_id FROM task WHERE id = '$task_id')"
         ))['user_id'];
@@ -63,8 +61,7 @@
     }
 
     function delete_task($conn, $task_id) {
-        $session_id = $_COOKIE["session_id"];
-        $user_id = _get_user_from_session($conn, $session_id);
+        $user_id = _get_user_from_session();
         $list_user_id = mysqli_fetch_assoc(mysqli_query(
             $conn, "SELECT user_id FROM list WHERE id = (SELECT list_id FROM task WHERE id = '$task_id')"
         ))['user_id'];
@@ -79,8 +76,7 @@
     }
 
     function get_user_lists($conn) {
-        $session_id = $_COOKIE["session_id"];
-        $user_id = _get_user_from_session($conn, $session_id);
+        $user_id = _get_user_from_session();
         $sql = <<<EOD
             SELECT list.id, list.name, task.id as task_id, task.name as task_name FROM list
             LEFT JOIN task ON list.id = task.list_id
@@ -91,16 +87,14 @@
     }
 
     function get_user_tasks($conn) {
-        $session_id = $_COOKIE["session_id"];
-        $user_id = _get_user_from_session($conn, $session_id);
+        $user_id = _get_user_from_session();
         $sql = "SELECT * FROM task WHERE list_id IN (SELECT id FROM list WHERE user_id = '$user_id')";
         $result = mysqli_query($conn, $sql);
         return $result;
     }
 
     function get_list($conn, $list_id) {
-        $session_id = $_COOKIE["session_id"];
-        $user_id = _get_user_from_session($conn, $session_id);
+        $user_id = _get_user_from_session();
         $list_user_id = _get_list_user_id($conn, $list_id);
 
         if ($user_id != $list_user_id) {
@@ -117,8 +111,7 @@
     }
 
     function get_task($conn, $task_id) {
-        $session_id = $_COOKIE["session_id"];
-        $user_id = _get_user_from_session($conn, $session_id);
+        $user_id = _get_user_from_session();
         $list_id = mysqli_fetch_assoc(mysqli_query(
             $conn, "SELECT list_id FROM task WHERE id = '$task_id'"
         ));
@@ -137,8 +130,7 @@
     }
 
     function get_user_monthly_tasks($conn, $year, $month) {
-        $session_id = $_COOKIE["session_id"];
-        $user_id = _get_user_from_session($conn, $session_id);
+        $user_id = _get_user_from_session();
         $sql = <<<EOD
             SELECT * FROM task WHERE list_id IN (
                 SELECT id FROM list WHERE user_id = '$user_id'

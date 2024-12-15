@@ -78,7 +78,8 @@
     function get_user_lists($conn) {
         $user_id = _get_user_from_session();
         $sql = <<<EOD
-            SELECT list.id, list.name, task.id as task_id, task.name as task_name FROM list
+            SELECT list.id, list.name, task.id as task_id, task.name as task_name,
+            task.flg_completed as flg_completed FROM list
             LEFT JOIN task ON list.id = task.list_id
             WHERE list.user_id = '$user_id';
         EOD;
@@ -101,7 +102,8 @@
             return false;
         } else {
             $sql = <<<EOD
-                SELECT list.id, list.name, task.id as task_id, task.name as task_name FROM list
+                SELECT list.id, list.name, task.id as task_id, task.name as task_name,
+                task.flg_completed as flg_completed FROM list
                 LEFT JOIN task ON list.id = task.list_id
                 WHERE list.user_id = '$user_id' AND list.id = '$list_id';
             EOD;

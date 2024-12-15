@@ -13,7 +13,6 @@
             $listId = $row['id'];
             $listName = $row['name'];
             $taskId = $row['task_id'];
-            $taskName = $row['task_name'];
             
             if (!isset($groupedTasks[$listId])) {
                 $groupedTasks[$listId] = array(
@@ -26,7 +25,8 @@
             if ($taskId !== null) {
                 $groupedTasks[$listId]['tasks'][] = array(
                     'id' => $taskId,
-                    'name' => $taskName
+                    'name' => $row['task_name'],
+                    'flg_completed' => $row['flg_completed'],
                 );
             }
         }

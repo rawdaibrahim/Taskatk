@@ -7,6 +7,8 @@
         $user_id = _get_user_from_session();
         $list_user_id = _get_list_user_id($conn, $list_id);
 
+        $flg_completed = boolval($flg_completed);
+
         if ($user_id != $list_user_id) {
             return false;
         } else {
@@ -37,7 +39,7 @@
         } else {
             $columns = [
                 'name' => $name, 'description' => $description,
-                'flg_completed' => $flg_completed, 'due_date' => $due_date
+                'flg_completed' => boolval($flg_completed), 'due_date' => $due_date
             ];
 
             $sql = "UPDATE task SET ";

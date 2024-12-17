@@ -2,12 +2,10 @@
     include('list_management.php');
 
     function create_task(
-        $conn, $list_id, $name, $description="", $due_date=null, $flg_completed=false
+        $conn, $list_id, $name, $description="", $due_date=null, $flg_completed=0
     ) {
         $user_id = _get_user_from_session();
         $list_user_id = _get_list_user_id($conn, $list_id);
-
-        $flg_completed = boolval($flg_completed);
 
         if ($user_id != $list_user_id) {
             return false;
@@ -27,7 +25,7 @@
     }
 
     function edit_task(
-        $conn, $task_id, $name=null, $description=null, $due_date=null, $flg_completed=false
+        $conn, $task_id, $name=null, $description=null, $due_date=null, $flg_completed=0
     ) {
         $user_id = _get_user_from_session();
         $list_user_id = mysqli_fetch_assoc(mysqli_query(
@@ -39,7 +37,7 @@
         } else {
             $columns = [
                 'name' => $name, 'description' => $description,
-                'flg_completed' => boolval($flg_completed), 'due_date' => $due_date
+                'flg_completed' => $flg_completed, 'due_date' => $due_date
             ];
 
             $sql = "UPDATE task SET ";

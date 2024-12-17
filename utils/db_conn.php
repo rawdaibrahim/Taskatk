@@ -25,5 +25,5 @@
         mysqli_close($conn);
     }
 
-    $conn = connect();
+    $conn = @connect();
 ?>

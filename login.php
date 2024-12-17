@@ -1,3 +1,4 @@
+<?php ob_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -62,7 +63,7 @@
 							}
 						}
 					}
-
+					ob_end_flush();
 					disconnect($conn);
 				?>
 			</form>

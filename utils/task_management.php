@@ -7,6 +7,8 @@
         $user_id = _get_user_from_session();
         $list_user_id = _get_list_user_id($conn, $list_id);
 
+        $flg_completed = boolval($flg_completed);
+
         if ($user_id != $list_user_id) {
             return false;
         } else {
@@ -37,7 +39,7 @@
         } else {
             $columns = [
                 'name' => $name, 'description' => $description,
-                'flg_completed' => $flg_completed, 'due_date' => $due_date
+                'flg_completed' => boolval($flg_completed), 'due_date' => $due_date
             ];
 
             $sql = "UPDATE task SET ";
@@ -78,7 +80,8 @@
     function get_user_lists($conn) {
         $user_id = _get_user_from_session();
         $sql = <<<EOD
-            SELECT list.id, list.name, task.id as task_id, task.name as task_name FROM list
+            SELECT list.id, list.name, task.id as task_id, task.name as task_name,
+            task.flg_completed as flg_completed FROM list
             LEFT JOIN task ON list.id = task.list_id
             WHERE list.user_id = '$user_id';
         EOD;
@@ -101,7 +104,8 @@
             return false;
         } else {
             $sql = <<<EOD
-                SELECT list.id, list.name, task.id as task_id, task.name as task_name FROM list
+                SELECT list.id, list.name, task.id as task_id, task.name as task_name,
+                task.flg_completed as flg_completed FROM list
                 LEFT JOIN task ON list.id = task.list_id
                 WHERE list.user_id = '$user_id' AND list.id = '$list_id';
             EOD;

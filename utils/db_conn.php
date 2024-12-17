@@ -1,7 +1,11 @@
 <?php
 
     function connect(){
-        $env = parse_ini_file('../.env');
+        try {
+            $env = parse_ini_file('.env');
+        } catch (Exception $e) {
+            $env = parse_ini_file('../.env');
+        }
         $db_user = $env["DB_USER"];
         $db_pass = $env["DB_PASSWORD"];
         $db_name = $env["DB_NAME"];

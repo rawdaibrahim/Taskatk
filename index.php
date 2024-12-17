@@ -34,6 +34,41 @@
     </div>
     <div id="lists-container">
     </div>
+    <div id="completed-section">
+      <div class="completed-button-container">
+        <button onclick="showCompleted()" class="completed-button">Completed Tasks
+          <img id="flip" class="not-flipped" src="css/arrow.png" alt="Icon" width="17" height="17">
+        </button>
+      </div>
+
+      <div id="completed-container" class="hidden">
+
+      </div>
+    </div>
   </section>
+
+  <div id="modal-overlay" class="hidden">
+    <div id="modal" class="modal hidden">
+      <form id="task-form" onsubmit="handleTaskFormSubmit(event)">
+        <h3 id="modal-title">Create Task</h3>
+        <label for="task-name">Task Name*</label>
+        <input type="text" id="task-name" required>
+        
+        <label for="task-due-date">Due Date*</label>
+        <input type="date" id="task-due-date" required>
+
+        <label for="task-description">Description</label>
+        <textarea id="task-description"></textarea>
+
+        <div class="modal-actions">
+          <button type="button" onclick="closeModal()" class="cancel">Cancel</button>
+          <button type="submit" class="save">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
 </body>
 </html>

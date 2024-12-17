@@ -85,7 +85,8 @@ input , select, textarea{
   margin-left: 10px;
 }
 
-input:focus {
+input:focus,
+textarea:focus{
   outline: none;
   border-color: #007bff;
   box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
@@ -289,21 +290,7 @@ a.active .link::after{
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.task input[type="checkbox"]:checked {
-  background-color: #92a4e8;
-  border-color: #2a4196;
-  position: relative;
-}
-
-.task input[type="checkbox"]:checked::before {
-  content: "✓";
-  color: white;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 20px;
-}
+form-div
 
 h3{
   text-align: center;
@@ -327,7 +314,7 @@ button{
 }
 
 .form-div{
-  margin: 100px 0 0 0;
+  margin: 150px 0 0 0;
   width:100%;
   display: flex;
   align-items: center;
@@ -357,7 +344,7 @@ button{
 textarea{
   height: 200px;
   min-width: 500px;
-  width:90%;
+  width:95%;
   text-wrap:wrap;
 }
 
@@ -423,62 +410,6 @@ textarea{
   font-size: 0.9em;
   padding: 5px;
 }
-.nav{
-  width:100%;
-  position: fixed; 
-  display: flex;
-  backdrop-filter:blur(20px);
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  background-image:linear-gradient(to right,rgb(129, 123, 181), rgb(53, 50, 149));
-  top: 0;
-  left: 0;
-  box-shadow: 0 4px 10px rgba(22, 22, 67, 0.253);
-
-}
-
-.nav .link{
-  text-decoration: none;
-  color:#f1f1fa;
-  margin: 10px;
-  padding-right: 1em;
-  position: relative;
-  font-size: 15px;
-  font-weight: 500;
-}
-
-.nav .link::after{
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 90%;
-  height: 3px;
-  background-color: #f1f1fa;
-  border-radius: 3px;
-  transition: .5s ease-in-out;
-  transform:scalex(0);
-  
-}
-
-.nav .link:hover:after{
-  transform: scaleX(1);
-}
-
-a.active .link{
-  color: #033ccd;
-}
-
-a.active .link::after{
-  transform: scaleX(1);
-  background-color:#f1f1fa;
-  height: 4px;
-}
-
-.hide{
-  display: none;
-}
 
 .flip{
   transform: rotate(180deg); /* Rotates the image 45 degrees */
@@ -499,7 +430,6 @@ a.active .link::after{
 
 #completed-section{
   padding:0 50px;
-  
 }
 .completed-button-container{
   display: flex;
@@ -534,7 +464,9 @@ a.active .link::after{
   display: inline-block;
 }
 
-.hidden { display: none; }
+.hidden { 
+  display: none;
+}
 .modal {
   position: fixed;
   top: 50%;
@@ -566,4 +498,147 @@ a.active .link::after{
   border:none;
   background-color: inherit;
   width:fit-content;
+}
+
+li{
+  list-style: none;
+  text-align: center;
+}
+ul{
+  margin:0;
+  padding:3px 5px;
+}
+
+.green{
+  color:rgb(0, 152, 0);  
+}
+
+.blue{
+  color: #0059b8;
+}
+
+.modal-actions{
+  margin:10px 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-actions button{
+  padding: 0.5rem 0.6rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.cancel{
+  background-color: rgb(225, 67, 83);
+}
+.save{
+  background-color: rgb(82, 79, 181);
+}
+
+.save:hover,
+.save:active {
+  background-color: rgb(58, 54, 164);
+}
+.cancel:hover,
+.cancel:active {
+  background-color: rgb(200, 35, 50);
+}
+
+
+#task-form input,
+#task-form textarea{
+  min-width: 500px;
+}
+
+input[type='date']{
+  cursor: pointer;
+}
+
+
+.tooltip-green,
+.tooltip-blue,
+.tooltip-red{
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* Tooltip styles */
+.tooltip-green::after {
+  content: attr(data-title); 
+  position: absolute;
+  bottom: 120%; 
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: green;
+  color: white;
+  padding: 5px 8px;
+  border-radius: 5px;
+  white-space: nowrap;
+  font-size: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  pointer-events: none; 
+  z-index: 100;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+.tooltip-blue::after{
+  content: attr(data-title); 
+  position: absolute;
+  bottom: 120%; 
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #0059b8;
+  color: white;
+  padding: 5px 8px;
+  border-radius: 5px;
+  white-space: nowrap;
+  font-size: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  pointer-events: none; 
+  z-index: 100;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+.tooltip-green:hover::after,
+.tooltip-blue:hover::after,
+.tooltip-red:hover::after{
+  opacity: 1;
+  visibility: visible;
+}
+
+.overdue {
+  color: red;
+}
+
+.tooltip-red::after {
+  content: attr(data-title);
+  position: absolute;
+  background-color: red;
+  color: white;
+
+  content: attr(data-title); 
+  position: absolute;
+  bottom: 120%; 
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: red;
+  color: white;
+  padding: 5px 8px;
+  border-radius: 5px;
+  white-space: nowrap;
+  font-size: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  pointer-events: none; 
+  z-index: 100;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
 }

@@ -6,7 +6,7 @@
   <title>Home</title>
   <link rel="stylesheet" href="css/style.css">
   <script src="script.js" defer></script>
-  
+
 </head>
 <body>
   <div class="nav">
@@ -62,9 +62,7 @@
     </div>
   </div>
 
-  <script>
-    
-  </script>
+
 
 </body>
 </html>

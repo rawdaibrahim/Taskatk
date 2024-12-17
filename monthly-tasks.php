@@ -10,7 +10,7 @@
   </style>
 </head>
 <body class="body">
-<div class="nav">
+  <div class="nav">
     <h1>
       <img src="css/to-do-list.png" alt="Icon" width="29" height="29">
       Taskatk
@@ -21,7 +21,7 @@
       <a href="About.php" class="link">About Us</a>
       <a href="contact.php" class="link">Contact Us</a>
     </div>
-  </div> 
+  </div>
   <div class="calendar">
     <div class="calendar-header">
       <button onclick="prevMonth()">&#8249;</button>
@@ -29,82 +29,106 @@
       <button onclick="nextMonth()">&#8250;</button>
     </div>
     <div class="calendar-grid" id="calendarGrid"></div>
-    </div>
   </div>
 
   <script>
-    const calendarGrid = document.getElementById('calendarGrid');
-    const monthYear = document.getElementById('monthYear');
+    document.addEventListener("DOMContentLoaded", function () {
+      const calendarGrid = document.getElementById("calendarGrid");
+      const monthYearLabel = document.getElementById("monthYear");
+      
+      let currentMonth = new Date().getMonth();
+      let currentYear = new Date().getFullYear();
 
-    let currentDate = new Date();
-
-    async function fetchTasks(year, month) {
-      const response = await fetch(`get_tasks.php?year=${year}&month=${month}`);
-      if (!response.ok) {
-        console.error('Failed to fetch tasks');
-        return {};
-      }
-      return await response.json();
-    }
-
-    async function renderCalendar() {
-      const year = currentDate.getFullYear();
-      const month = currentDate.getMonth() + 1;
-
-      monthYear.textContent = currentDate.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long'
-      });
-
-      const firstDay = new Date(year, month - 1, 1).getDay();
-      const daysInMonth = new Date(year, month, 0).getDate();
-      const tasks = await fetchTasks(year, month);
-
-      calendarGrid.innerHTML = '';
-
-      // Fill blank cells for days before the first of the month
-      for (let i = 0; i < firstDay; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'calendar-cell';
-        calendarGrid.appendChild(cell);
+      function fetchAndRenderTasks(month, year) {
+        const url = `/Taskatk/api/tasks.php/monthly_tasks?month=${month+1}&year=${year}`;
+        fetch(url)
+          .then(response => {
+            if (!response.ok) throw new Error("Failed to fetch tasks");
+            return response.json();
+          })
+          .then(tasks => {
+            renderCalendar(month, year, tasks);
+          })
+          .catch(error => {
+            console.error("Error fetching tasks:", error);
+          });
       }
 
-      // Fill cells with days and tasks
-      for (let day = 1; day <= daysInMonth; day++) {
-        const cell = document.createElement('div');
-        cell.className = 'calendar-cell';
+      function renderCalendar(month, year, tasks) {
+        calendarGrid.innerHTML = ""; 
 
-        const date = document.createElement('div');
-        date.className = 'date';
-        date.textContent = day;
+        const today = new Date(); 
+        const firstDay = new Date(year, month, 1).getDay(); 
+        const daysInMonth = new Date(year, month + 1, 0).getDate(); 
 
-        const tasksContainer = document.createElement('div');
-        tasksContainer.className = 'tasks';
+        for (let i = 0; i < firstDay; i++) {
+          const emptyCell = document.createElement("div");
+          emptyCell.className = "calendar-cell empty";
+          calendarGrid.appendChild(emptyCell);
+        }
 
-        const dayTasks = tasks[day] || [];
-        dayTasks.forEach(task => {
-          const taskItem = document.createElement('div');
-          taskItem.textContent = `- ${task}`;
-          tasksContainer.appendChild(taskItem);
-        });
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dayCell = document.createElement("div");
+          dayCell.className = "calendar-cell";
+          dayCell.innerHTML = `<span class="date">${day}</span>`;
+          
+          const tasksForDay = tasks.filter(task => new Date(task.due_date).getDate() === day);
+          if (tasksForDay.length > 0) {
+            const taskList = document.createElement("ul");
+            taskList.className = "task-list";
+            tasksForDay.forEach(task => {
+              const taskItem = document.createElement("li");
+              if(task.flg_completed == "1"){
+                taskItem.className = "green tooltip-green";
+                taskItem.setAttribute("data-title", "Completed");
+              }else{
+                const dueDate = new Date(task.due_date);
+                if (dueDate < today && task.flg_completed != "1") {
+                  taskItem.className = "overdue tooltip-red";
+                  taskItem.setAttribute("data-title", "Overdue");
+                } else {
+                  taskItem.className = "blue tooltip-blue";
+                  taskItem.setAttribute("data-title", "Inprogress");
+                }
+              }
+                
+              taskItem.textContent = task.name; 
+              taskList.appendChild(taskItem);
+              
+            });
+            dayCell.appendChild(taskList);
+          }
 
-        cell.appendChild(date);
-        cell.appendChild(tasksContainer);
-        calendarGrid.appendChild(cell);
+          calendarGrid.appendChild(dayCell);
+        }
+
+        const monthNames = [
+          "January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"
+        ];
+        monthYearLabel.textContent = `${monthNames[month]} ${year}`;
       }
-    }
 
-    function prevMonth() {
-      currentDate.setMonth(currentDate.getMonth() - 1);
-      renderCalendar();
-    }
+      window.prevMonth = function () {
+        currentMonth--;
+        if (currentMonth < 0) {
+          currentMonth = 11;
+          currentYear--;
+        }
+        fetchAndRenderTasks(currentMonth, currentYear);
+      };
 
-    function nextMonth() {
-      currentDate.setMonth(currentDate.getMonth() + 1);
-      renderCalendar();
-    }
+      window.nextMonth = function () {
+        currentMonth++;
+        if (currentMonth > 11) {
+          currentMonth = 0;
+          currentYear++;
+        }
+        fetchAndRenderTasks(currentMonth, currentYear);
+      };
 
-    renderCalendar();
+      fetchAndRenderTasks(currentMonth, currentYear);
+    });
   </script>
 </body>
 </html>

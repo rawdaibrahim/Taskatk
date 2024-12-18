@@ -290,8 +290,6 @@ a.active .link::after{
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-form-div
-
 h3{
   text-align: center;
   font-size: 25px;
@@ -434,11 +432,15 @@ textarea{
 .completed-button-container{
   display: flex;
   align-items: center;
-  justify-content:right;
+  justify-content:center;
 }
 
 #completed-container{
-  padding: 40px;
+  padding: 0 40px;
+}
+
+.completed-tria{
+  gap:20px;
 }
 
 .grid {
@@ -477,7 +479,8 @@ textarea{
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1000;
 }
-#modal-overlay {
+#modal-overlay,
+#taskModal {
   position: fixed;
   top: 0;
   left: 0;
@@ -486,9 +489,7 @@ textarea{
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
 }
-#completed-section {
-  margin-top: 20px;
-}
+
 .completed-task {
   display: flex;
   justify-content: space-between;
@@ -510,11 +511,17 @@ ul{
 }
 
 .green{
-  color:rgb(0, 152, 0);  
+  background-color:rgb(0, 152, 0);
+  color: white;  
+  border-radius: 5px;
+  padding:2px 20px;
 }
 
 .blue{
-  color: #0059b8;
+  background-color: #0059b8;
+  color: white;
+  border-radius: 5px;
+  padding:2px 20px;
 }
 
 .modal-actions{
@@ -571,11 +578,11 @@ input[type='date']{
 .tooltip-green::after {
   content: attr(data-title); 
   position: absolute;
-  bottom: 120%; 
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: green;
-  color: white;
+  top: 50%;
+  left: 120%;
+  transform: translateY(-50%);
+  color: green;
+  background-color: rgba(255, 255, 255,1);
   padding: 5px 8px;
   border-radius: 5px;
   white-space: nowrap;
@@ -590,11 +597,11 @@ input[type='date']{
 .tooltip-blue::after{
   content: attr(data-title); 
   position: absolute;
-  bottom: 120%; 
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #0059b8;
-  color: white;
+  top: 50%;
+  left: 120%;
+  transform: translateY(-50%);
+  color: #0059b8;
+  background-color: rgba(255, 255, 255,1);
   padding: 5px 8px;
   border-radius: 5px;
   white-space: nowrap;
@@ -607,30 +614,52 @@ input[type='date']{
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
 }
 
+.tooltip-blue::before,
+.tooltip-red::before,
+.tooltip-green::before{
+  content: "";
+  position: absolute;
+  top: 50%; /* Align with the center */
+  left: 115%; /* Adjust triangle position relative to the tooltip */
+  transform: translateY(-50%) rotate(45deg); /* Rotate the square to make a triangle */
+  width: 8px;
+  height: 8px;
+  background-color: rgba(255, 255, 255, 1); /* Match tooltip background */
+  opacity: 0;
+  border: none;
+  visibility: hidden;
+  box-shadow: 
+    -4px 0 4px rgba(0, 0, 0, 0.3), /* Left shadow */
+    0 -4px 4px rgba(0, 0, 0, 0.3), /* Top shadow */
+    0 4px 4px rgba(0, 0, 0, 0.3);  /* Bottom shadow */
+  z-index: 99; /* Place below tooltip */
+}
+
 .tooltip-green:hover::after,
 .tooltip-blue:hover::after,
-.tooltip-red:hover::after{
+.tooltip-red:hover::after,
+.tooltip-blue:hover::before,
+.tooltip-green:hover::before,
+.tooltip-red:hover::before{
   opacity: 1;
   visibility: visible;
 }
 
 .overdue {
-  color: red;
+  background-color: red;
+  color: white;
+  border-radius: 5px;
+  padding:2px 20px;
 }
 
 .tooltip-red::after {
-  content: attr(data-title);
-  position: absolute;
-  background-color: red;
-  color: white;
-
   content: attr(data-title); 
   position: absolute;
-  bottom: 120%; 
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: red;
-  color: white;
+  top: 50%;
+  left: 120%;
+  transform: translateY(-50%);
+  color: red;
+  background-color: rgba(255, 255, 255,1);
   padding: 5px 8px;
   border-radius: 5px;
   white-space: nowrap;
@@ -642,3 +671,4 @@ input[type='date']{
   z-index: 100;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
 }
+

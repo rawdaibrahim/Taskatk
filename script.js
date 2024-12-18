@@ -1,4 +1,4 @@
-let userType = "normal"; 
+let maxLists = null; 
 let taskData = [];
 let currentEditTask = null;
 let currentListId = null;
@@ -6,8 +6,10 @@ let currentListId = null;
 const modalOverlay = document.getElementById('modal-overlay');
 const modal = document.getElementById('modal');
 const taskForm = document.getElementById('task-form');
-const completedContainer = document.getElementById('completed-container');
-const flip = document.getElementById("flip");
+
+document.addEventListener("DOMContentLoaded", ()=>{
+  fetchMaxLists
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   fetchLists();
@@ -22,6 +24,29 @@ function fetchLists() {
     })
     .catch(err => console.error("Error fetching lists:", err));
 }
+
+function fetchMaxLists() {
+  const url = '/Taskatk/api/user.php/max_lists';
+  fetch(url)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to fetch max lists');
+      }
+      return response.json();
+    })
+    .then(data => {
+      maxLists = data.max_lists;
+    })
+    .catch(error => {
+      console.error('Error fetching max lists:', error);
+    });
+}
+
+
+
+// Call fetchMaxLists when the page loads
+document.addEventListener("DOMContentLoaded", fetchMaxLists);
+
 
 function renderLists() {
   const container = document.getElementById("lists-container");
@@ -42,13 +67,26 @@ function renderLists() {
         </button>
       </div>
       <div id="tasks-${list.id}"></div>
-      <button class="add-button" onclick="openCreateTaskModal('${list.id}')">
+      <button class="add-button" onclick="openCreateTaskModal('${list.id}')" style="padding-bottom:5px">
         Create Task
         <img src="css/plus.png" alt="Icon" width="17" height="17">
       </button>
+
+
+      <div id="completed-section">
+      <div class="completed-button-container">
+        <button onclick="showCompleted('${list.id}')" class="completed-button">
+          <img id="flip-${list.id}" class="not-flipped" src="css/arrow.png" alt="Icon" width="40" height="15" title="Show completed tasks">
+        </button>
+      </div>
+
+      <div id="completed-container-${list.id}" class="hidden completed-tria">
+      </div>
+    </div>
     `;
 
     const tasksContainer = listElement.querySelector(`#tasks-${list.id}`);
+    const completedContainer = listElement.querySelector(`#completed-container-${list.id}`);
     list.tasks.forEach(task => {
       if (task.flg_completed == 0) {
         const taskElement = document.createElement("div");
@@ -62,27 +100,11 @@ function renderLists() {
           <button onclick="openTaskInfo('${list.id}', '${task.id}')">
             <img src="css/information.png" alt="Icon" width="20" height="20" title="Task Info.">
           </button>
+
         `;
-
-
         tasksContainer.appendChild(taskElement);
-      }
-    });
 
-    container.appendChild(listElement);
-  });
-
-  renderCompletedTasks();
-}
-
-function renderCompletedTasks() {
-  completedContainer.innerHTML = "";
-
-  taskData.forEach(list => {
-    console.log(list);
-    list.tasks
-      .filter(task => task.flg_completed == 1)
-      .forEach(task => {
+      }else{
         const taskElement = document.createElement("div");
         taskElement.className = "completed-task";
         taskElement.id = task.id;
@@ -95,32 +117,44 @@ function renderCompletedTasks() {
         `;
 
         completedContainer.appendChild(taskElement);
-      });
+      }
+    });
+
+    container.appendChild(listElement);
   });
+
 }
 
+
+
 function addList() {
-  const listName = prompt("Enter list name:");
-  if (!listName) return;
 
-  const formData = new URLSearchParams();
-  formData.append('list_name', listName);
+  const numberOfLists = taskData.length;
+  if (numberOfLists<maxLists){
+    const listName = prompt("Enter list name:");
+    if (!listName) return;
 
-  fetch('/Taskatk/api/lists.php/create', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: formData.toString()
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.list_id) {
-      taskData.push({ id: data.list_id, name: listName, tasks: [] });
-      renderLists();
-    } else {
-      alert("Error creating list: " + data.message);
-    }
-  })
-  .catch(err => console.error("Error adding list:", err));
+    const formData = new URLSearchParams();
+    formData.append('list_name', listName);
+
+    fetch('/Taskatk/api/lists.php/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: formData.toString()
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.list_id) {
+        taskData.push({ id: data.list_id, name: listName, tasks: [] });
+        renderLists();
+      } else {
+        alert("Error creating list: " + data.message);
+      }
+    })
+    .catch(err => console.error("Error adding list:", err));
+    }else
+      alert("You retched your maximum lists allowed")
+  
 }
 
 
@@ -144,6 +178,7 @@ function closeModal() {
 
 function handleTaskFormSubmit(event) {
   event.preventDefault();
+  document.getElementsByClassName
   const taskName = document.getElementById('task-name').value;
   const dueDate = document.getElementById('task-due-date').value;
   const description = document.getElementById('task-description').value;
@@ -328,12 +363,15 @@ function removeList(listId) {
 
 
 
-function showCompleted() {
-  if (completedContainer.className === "show") {
-    completedContainer.className = "hidden";
+function showCompleted(listId) {
+  const completedContainer = document.querySelector(`#completed-container-${listId}`);
+  const flip = document.querySelector(`#flip-${listId}`);
+
+  if (completedContainer.classList.contains("show")) {
+    completedContainer.classList.replace("show", "hidden");
     flip.className = "not-flipped";
   } else {
-    completedContainer.className = "show";
+    completedContainer.classList.replace("hidden", "show");
     flip.className = "flip";
   }
 }

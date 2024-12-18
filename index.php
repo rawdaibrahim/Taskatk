@@ -34,17 +34,7 @@
     </div>
     <div id="lists-container">
     </div>
-    <div id="completed-section">
-      <div class="completed-button-container">
-        <button onclick="showCompleted()" class="completed-button">Completed Tasks
-          <img id="flip" class="not-flipped" src="css/arrow.png" alt="Icon" width="17" height="17">
-        </button>
-      </div>
-
-      <div id="completed-container" class="hidden">
-
-      </div>
-    </div>
+    
   </section>
 
   <div id="modal-overlay" class="hidden">
@@ -67,8 +57,6 @@
       </form>
     </div>
   </div>
-
-
 
 </body>
 </html>

@@ -10,7 +10,7 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playwrite+HR+Lijeva:wght@100..400&family=Playwrite+HU:wght@100..400&display=swap" rel="stylesheet">
 	</head>
-	<body class="body">
+	<body class="body f">
 		<div class="container">
 			<form id="login-form" action="<?php htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post">
 				<h1>Login</h1>

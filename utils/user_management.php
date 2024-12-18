@@ -25,7 +25,7 @@
                 $cookie_name = "session_id";
                 $cookie_value = $row['id'] + 35623559663;
                 setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
-                return $row['id'];
+                return $cookie_value;
             } else {
                 return false;
             }
@@ -34,8 +34,10 @@
         }
     }
 
-    function _get_user_from_session() {
-        $session_id = $_COOKIE["session_id"];
+    function _get_user_from_session($session_id = null) {
+        if ($session_id == null) {
+            $session_id = $_COOKIE["session_id"];
+        }
         return $session_id - 35623559663;
     }
 
@@ -77,5 +79,14 @@
             "SELECT count(*) FROM list WHERE user_id = '$user_id'"
         ))['count(*)'];
         return $max_lists - $user_list_count;
+    }
+
+    function check_user_lists($conn, $session_id) {
+        $user_id = _get_user_from_session($session_id);
+        $user_list_count = mysqli_fetch_assoc(mysqli_query(
+            $conn,
+            "SELECT count(*) FROM list WHERE user_id = '$user_id'"
+        ))['count(*)'];
+        return $user_list_count;
     }
 ?>

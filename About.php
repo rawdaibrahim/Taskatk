@@ -193,7 +193,7 @@ footer p{
       <p>
         Those were 5 courageous developers, fearless of what the college monster had for them. 
         But little did they know... it was on that fateful day, the day they decided to slay the monster, 
-        when everything began. Armed with their swords (keyboards), helmets (coffee mugs), and laptops, 
+        when everything began. Armed with their swords, helmets, and laptops, 
         they ventured into a place <strong>of no return</strong>—the world of PHP and software development!
       </p>
     </section>

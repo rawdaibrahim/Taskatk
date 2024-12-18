@@ -1,3 +1,10 @@
+<?php
+  if (!isset($_COOKIE["session_id"])) {
+    header('Location: login.php');
+    die();
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

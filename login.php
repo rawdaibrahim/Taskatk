@@ -51,7 +51,11 @@
 									</p>
 								EOD;
 								
-								header('refresh:1;url=index.php');
+								if (check_user_lists($conn, $success) == 0) {
+									header('refresh:1;url=welcome.php');
+								} else {
+									header('refresh:1;url=index.php');
+								}
 								die();
 							} else {
 								echo <<<EOD

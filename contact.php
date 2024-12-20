@@ -26,16 +26,27 @@
         Please fill out the form below and we will get back to you as soon as possible</pre>
       <div style="display: flex;">
         <input type="text" id="name" placeholder="Your Name" required>
-        <input type="email" id="email" placeholder="Your Email" required>
+        <!-- <input type="email" id="email" placeholder="Your Email" required> -->
       </div>
       <textarea id="message" placeholder="Your Message" required></textarea>
       <div class="center">
-        <button type="submit"  class="submit" >Send</button>
+        <a href="#" onclick="mailFn()" id="contact"  class="submit" >Send</a>
       </div>
       
     </form>
   </section>
 
+  <script>
+    function mailFn() {
+      let contact = document.getElementById('contact').value;
+      let name = document.getElementById('name').value;
+      let message = document.getElementById('message').value;
+      let link =
+        "mailto:admin@taskatk.com?subject=Asking for help&body="
+        + encodeURIComponent(message + "\n\n" + "With regards,\n" + name);
+      window.location.href = link;
+    }
+  </script>
 
 </body>
 </html>
